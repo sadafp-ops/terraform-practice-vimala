@@ -13,7 +13,7 @@ variable "aws_profile" {
 variable "instance_type" {
   description = "The type of EC2 instance to create"
   type        = string
-  default     = "t2.micro"
+  default     = "t3.micro"
   
 }
 variable  "ami_id" {
