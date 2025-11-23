@@ -22,3 +22,13 @@ variable  "ami_id" {
   default     = "ami-0ecb62995f68bb549" // Example AMI ID for Amazon Linux 2 in us-west-2{
   
 }
+variable "servers" {
+  description = "A map of server names to their respective tags"
+  type        = map(string)
+  default     = {
+    server1 = "Web Server"
+    server2 = "Database Server"
+    server3 = "Application Server"
+  } 
+  
+}
