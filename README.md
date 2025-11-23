@@ -1,10 +1,11 @@
+
 # terraform-practice-vimala
 pushing new branch
 
 Here you go, Thangaraj — a clean, sharp, **interview-ready note** summarizing all the important points you asked above.
 No nonsense, no fluff, just the exact facts you need to speak confidently.
 
----
+
 
 # **Terraform Remote Backend – Interview Note (S3 + DynamoDB)**
 
@@ -147,6 +148,5 @@ They continue from where you left off, safely.
 
 **This is the whole point of using remote backend.**
 
----
 
 If you need this as a **PDF**, I can generate it.
