@@ -1,0 +1,156 @@
+Terraform Backend Setup (Remote State)
+
+Goal: Store your terraform state in S3 bucket + DynamoDB locking.
+
+Key steps:
+
+Create S3 bucket → store tfstate
+
+Create DynamoDB table → locking
+
+Write backend.tf
+
+Run terraform init → it will ask bucket, table, region
+
+Run terraform state push / migrate (if needed)
+
+Verify state in S3 (you cannot open .tfstate because bucket is private → access denied is expected)
+
+Run terraform plan to confirm backend is working
+
+3. Why Browser Shows “Access Denied”
+
+Because Terraform state files must ALWAYS be private.
+You should check the state using terraform CLI, not Google Chrome.
+
+4. IAM User & Permissions
+
+To make backend work:
+
+IAM user must have AmazonS3FullAccess + DynamoDB permissions.
+
+Use aws sts get-caller-identity to confirm which IAM user your VS Code terminal is using.
+
+5. New Developer Joining (IMPORTANT INTERVIEW QUESTION)
+
+Case 1: Remote backend already exists (S3 + DynamoDB)
+
+Developer clones repo
+
+Configures AWS credentials
+
+Runs terraform init
+
+Terraform automatically uses remote backend
+
+No local state → safe
+
+Case 2: Remote backend NOT configured (local state only)
+Local .tfstate never reaches GitHub (ignored by .gitignore).
+A new developer will have zero state → infra already exists → mismatch.
+Solution:
+They must run terraform import to rebuild the state manually.
+
+This question always appears in Terraform interviews.
+
+6. GitHub Repository Rules
+
+You configured:
+
+Main branch = protected
+
+No direct push allowed
+
+Only PR → Review → Merge
+
+You also practiced:
+
+Feature branch → commit → push
+
+Create PR
+
+Request reviewer
+
+Reviewer approves
+
+Merge to main
+
+This is exactly what companies expect.
+
+7. Terraform Loops (CRITICAL TOPIC)
+Two types of loops:
+
+count
+
+for_each
+
+count
+
+Used when:
+
+All resources are identical
+
+Example: create 5 EC2 machines with same config
+
+Example:
+
+resource "aws_instance" "dev" {
+  count = 3
+  ami   = "ami-xyz"
+  instance_type = "t3.micro"
+
+  tags = {
+    Name = "dev-${count.index}"
+  }
+}
+
+
+Creates:
+
+dev-0
+
+dev-1
+
+dev-2
+
+Limitation of count
+
+If you delete one, indexing breaks → Terraform recreates others → unstable for heterogeneous resources.
+
+8. for_each
+
+Use for_each when:
+
+Resources are different
+
+Example: web server, db server, app server
+
+Example:
+
+variable "servers" {
+  type = map(string)
+  default = {
+    web = "t3.micro"
+    db  = "t3.small"
+    app = "t3.large"
+  }
+}
+
+resource "aws_instance" "servers" {
+  for_each = var.servers
+
+  ami           = "ami-xyz"
+  instance_type = each.value
+
+  tags = {
+    Name = each.key
+  }
+}
+
+Benefits of for_each
+
+Delete one → others unaffected
+
+Perfect for VPCs, Subnets, SGs, multiple configs
+
+This is how real Terraform codebases work
