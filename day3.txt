@@ -1,0 +1,271 @@
+1. IAM USER vs GROUP vs ROLE (Core Foundation)**
+
+### **IAM User**
+
+* Represents a **person** using AWS.
+* Has:
+
+  * Username + password (console login)
+  * Access key + secret key (CLI)
+* Gets permissions through **policies**.
+
+### **IAM Group**
+
+* A **container** of users.
+* You attach **policies to the group**, not individually to every user.
+* All users inside automatically inherit the group permissions.
+
+### **IAM Role**
+
+* **Not for humans.**
+* **Temporary credentials** (STS tokens).
+* Used by:
+
+  * EC2
+  * Lambda
+  * ECS tasks
+  * Cross-account access
+* No username/password. No long-term access key.
+
+### **Where each is used?**
+
+* **User** → People
+* **Group** → Manage permissions for many users
+* **Role** → Services assuming permissions temporarily
+
+## **2. Policies (Identity-based vs Resource-based)**
+
+### **Identity-based policy**
+
+Attached to:
+
+* IAM User
+* IAM Group
+* IAM Role
+
+Controls *what the identity can do*.
+
+### **Resource-based policy**
+
+Attached directly to the resource:
+
+* S3 bucket policy
+* SQS queue policy
+* Lambda resource policy
+
+Controls *who can access that resource*.
+
+### **Inline Policy**
+
+A custom JSON policy embedded directly into a **single** user/group/role.
+
+### **SCP (Service Control Policy)**
+
+* Used only in **AWS Organizations**.
+* Example:
+
+  * “Deny EC2 launching in us-east-1 region”
+* Not part of regular IAM practice.
+
+---
+
+## **3. STS — Temporary Security Tokens**
+
+STS = **Security Token Service**
+Used for:
+
+* AssumeRole
+* Cross-account access
+* Short-term credentials for EC2/Lambda/ECS
+
+Outputs:
+
+* AccessKey
+* SecretKey
+* SessionToken
+  (valid for 15 minutes–12 hours)
+
+---
+
+## **4. Access Keys**
+
+* Permanent keys → **dangerous**, must be rotated every 90 days.
+* Avoid storing in code, GitHub, Jenkins.
+* Prefer IAM roles or OpenID Connect (OIDC).
+
+---
+
+## **5. EC2 Uploading Files to S3 Using IAM Role**
+
+### Steps you performed:
+
+1. Create an S3 bucket
+2. Create IAM role
+3. Trust policy = EC2
+4. Permission policy = AmazonS3FullAccess (for testing)
+5. Attach IAM role to EC2
+6. SSH into EC2
+7. Create file
+
+   ```
+   echo "hello sadaf" > dadaf.txt
+   ```
+8. Copy file to S3
+
+   ```
+   aws s3 cp dadaf.txt s3://bucketname/
+   ```
+
+### Why this worked?
+
+Because EC2 assumed the IAM Role → got temporary credentials → used to write to S3.
+
+### Key learning:
+
+**EC2 cannot access S3 without IAM Role.**
+Access keys are not required.
+
+---
+
+## **6. When EC2 Upload Fails**
+
+If EC2 has **no IAM role**, you get:
+
+```
+Unable to locate credentials
+```
+
+This is expected.
+You correctly saw this in your test after detaching the role.
+
+---
+
+## **7. ARN — Amazon Resource Name**
+
+Example:
+
+```
+arn:aws:s3:::mybucket
+```
+
+ARN = unique identifier for every AWS resource.
+Used inside policies.
+
+Essential part of:
+
+* Trust policies
+* Resource policies
+* Inline policies
+* Lambda permissions
+* Cross-account access
+
+---
+
+## **8. Identity Providers / OIDC / SSO**
+
+Used when:
+
+* GitHub Actions
+* Azure AD
+* Google ID
+* Corporate login
+
+With OIDC:
+
+* You don’t store long-term access keys in GitHub
+* GitHub authenticates using temporary tokens
+
+This is **industry standard** now.
+
+---
+
+## **9. Permission Boundaries**
+
+Used to:
+
+* Limit maximum allowed permissions for a user or role.
+* Example:
+
+  * Developer should never become admin even by mistake.
+
+Used by:
+
+* Large enterprises
+* Multi-team orgs
+
+Not used in small projects.
+
+---
+
+## **10. Cross-Account Access (Big Interview Topic)**
+
+This is **critical** — asked in almost every DevOps interview.
+
+### Scenario:
+
+* Account A (your AWS)
+* Account B (client AWS)
+
+You need Account A user to access Account B resources.
+
+### How it works:
+
+1. **In Account B**
+
+   * Create a role
+   * Trust = Account A
+   * Permission = what Account A user should do
+
+2. **In Account A**
+
+   * User assumes role from Account B
+
+3. **User runs**
+
+   ```
+   aws sts assume-role ...
+   ```
+
+4. Gets:
+
+   * AccessKey
+   * SecretKey
+   * SessionToken
+
+Short-lived → safe.
+
+---
+
+## **11. What You Must Study Next**
+
+Your priority order:
+
+1. IAM recap (users, groups, roles, policies, STS, resource policies)
+2. VPC (CIDR, subnets, routing, NAT, IGW)
+3. EC2, S3 deeper
+4. Terraform for IAM, VPC, EC2
+5. Cross-account hands-on
+6. VPC peering
+7. EKS IAM roles for service accounts (IRSA)
+
+IAM + VPC is the **foundation**.
+Without these, Terraform and Kubernetes will be a mess.
+
+---
+
+# **🔥 SUPER SHORT INTERVIEW SUMMARY (Save this)**
+
+```
+IAM User → human identity, permanent credentials
+IAM Group → permission container for users
+IAM Role → temporary permissions for AWS services and cross-account
+Policies → permissions in JSON (identity-based or resource-based)
+STS → creates temporary credentials for roles
+Resource Policies → S3, SQS, Lambda allow/deny
+Access Keys → risky, rotate, avoid storing
+EC2 → needs IAM role to upload to S3
+Cross-account → role in Account B trusts Account A
+OIDC → GitHub authentication without access keys
+Permission Boundaries → restrict max permissions for a user/role
+ARN → unique identifier for all AWS resources
+

@@ -1,0 +1,218 @@
+1. Daily Study Plan (Agreed Schedule)
+
+Study together 12 PM to 2 PM
+
+Two focus areas:
+
+Terraform
+
+Kubernetes
+
+Practice every day → consistency is the only thing that helps
+
+2. What Terraform Is (Interview Definition)
+
+Terraform = Infrastructure as Code tool built by HashiCorp, used to provision, modify, destroy, and automate infrastructure on:
+
+AWS
+
+Azure
+
+GCP
+
+VMware
+
+On-prem
+…using declarative configuration files.
+
+Simple answer for interview:
+Terraform lets you create cloud resources by writing code instead of clicking in the console.
+
+3. Terraform Required Files
+main.tf
+
+Contains the actual resource definitions (EC2, VPC, S3, SG, etc.)
+
+provider.tf
+
+Specifies which cloud (AWS, GCP, Azure) we are using and which region/profile.
+
+variables.tf
+
+Reusable variables (AMI IDs, instance types, region, profile, etc.)
+
+outputs.tf
+
+Prints important resource info (public IP, instance ID, etc.).
+
+terraform.tfstate
+
+Stores the current state of cloud infrastructure.
+Never push it to GitHub.
+
+.gitignore
+
+Must exclude:
+
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+*.hcl
+*.tfvars
+
+4. Terraform Basic Commands (with meaning)
+
+terraform init → downloads provider plugins
+
+terraform plan → shows what will change
+
+terraform apply → creates/modifies infrastructure
+
+terraform destroy → deletes only Terraform-managed resources
+
+5. EC2 Creation Using Terraform
+
+You created:
+
+provider.tf
+
+variables.tf
+
+main.tf
+
+outputs.tf
+
+And deployed an EC2 instance by:
+
+aws configure
+
+terraform init
+
+terraform plan
+
+terraform apply
+
+6. Why Your AMI ID Failed
+
+Your region and AMI ID did not match.
+AMI IDs are region-specific.
+You finally switched to us-east-1 and used the correct AMI ID.
+
+7. Terraform State File (Critical Concept)
+
+tfstate = brain of Terraform
+
+If deleted → Terraform forgets all resources
+
+Terraform may try to recreate everything
+
+Never push state to GitHub
+
+Always store state on remote backend (S3 + DynamoDB)
+
+8. Pushing Terraform Code to GitHub
+
+Workflow you practiced:
+
+Create GitHub repo
+
+Clone it
+
+Create feature branch:
+
+git checkout -b feature-01
+
+
+Add/commit code:
+
+git add .
+git commit -m "Added Terraform EC2 code"
+
+
+Push to branch:
+
+git push origin feature-01
+
+
+Open Pull Request
+
+Review → Approve → Merge
+
+Main branch stays protected
+
+This is exactly how real companies work.
+
+9. Remote Backend Reminder
+
+You learned:
+
+tfstate must move to S3 + DynamoDB
+
+Never store state locally
+
+Never push tfstate to GitHub
+
+Remote backend prevents conflicts when multiple people work on same infra
+
+10. Next Topics Planned
+
+You will learn:
+
+Security Groups
+
+VPC
+
+Subnets
+
+Route Tables
+
+NAT / IGW
+
+Load Balancers
+
+IAM Roles
+
+Terraform Modules
+
+Terraform Loop: count and for_each
+
+Kuberenetes basics → pods, deployments, services, ingress
+
+Final Notes (Save This Section Directly):
+TERRAFORM STUDY SUMMARY
+
+1. Daily study 12–2 PM. Focus: Terraform + Kubernetes.
+
+2. Terraform = Infrastructure as Code used to automate cloud (AWS/GCP/Azure).
+
+3. Core TF files:
+   - main.tf: resources
+   - provider.tf: cloud provider
+   - variables.tf: reusable variables
+   - outputs.tf: print resource info
+   - terraform.tfstate: current infra state (NEVER push to GitHub)
+   - .gitignore: exclude state files
+
+4. Commands:
+   terraform init
+   terraform plan
+   terraform apply
+   terraform destroy
+
+5. EC2 creation required correct AMI ID for the correct region.
+
+6. tfstate stores the real infra status. Deleting it causes Terraform to recreate resources.
+
+7. Remote backend = S3 + DynamoDB for safe state storage.
+
+8. GitHub workflow:
+   - feature branch
+   - push
+   - pull request
+   - review
+   - merge (main is protected)
+
+9. Next learning topics:
+   VPC, Subnets, SG, IGW, NAT, LB, IAM, Modules, Loops, Kubernetes.
+
+This summary is for interview preparation and daily revision.
