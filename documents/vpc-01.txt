@@ -1,4 +1,4 @@
-1.3- tier architecture of vpc
+1.3- tier architecture of vpc.
 2. i created a vpc ,(only vpc) - with enabling host name
 3. then i created subnets :
                     1. public subnet - in same region , allow public ip address (attch to our vpc)
