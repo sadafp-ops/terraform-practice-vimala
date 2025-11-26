@@ -1,0 +1,46 @@
+1.3- tier architecture of vpc.
+2. i created a vpc ,(only vpc) - with enabling host name
+3. then i created subnets :
+                    1. public subnet - in same region , allow public ip address (attch to our vpc)
+                    2. private subnet - in same region , disable public ip address(for app private & attch to our vpc)
+0                    3. private subnet - in same region , disable public ip address (for db & attach to our vpc )
+
+4.then i enable "auto assign public ip " - in public subnet.
+5.And i created a IGW attach to our vpc, then create route table
+6.route table - add rule to the IGW and associate with public subnet.
+7. And i created a nat gateway to our vpc, in private subnet(app subnet).Allocate Elastic IP
+8.route table - add rule to the nat gateway and associate with private subnet.
+
+launching ec2:
+            * launch a instance within our vpc and public subnet. 
+             * Allow SSH from your IP
+             * Allow HTTP (80) from anywhere
+
+            *launch a another instance with private subnet 
+              * Allow SSH only from Public EC2
+              * Allow port 3000 only from Public EC2
+IAM Role : 
+         create a i " AWSsessionmanager instance core " attach policy to your Role
+
+and then, 
+        modify role to your private ec2 instance.
+
+
+
+. Connectivity Tests (Important)**
+
+## You must verify:
+
+* 1.Browser → Public EC2: Should work
+* 2.Public EC2 → Private EC2 (SSH): Should work
+
+1.if not work just test with apache in public instance and the commands are,
+                                     sudo yum install -y httpd
+                                     sudo systemctl start httpd
+                                     sudo systemctl enable httpd
+2. if not work just move key file from local machine to your public instance by the command,
+                                      scp -i /The path is your local laptop key\Take this pem file from my laptop and copy it into the EC2.”
+                                      and then ls check pem file is present.
+                                      and then work with command:
+                                                                ssh -i /path/to/your/private_key.pem ec2-user@<private_instance_ip>
+                                    
