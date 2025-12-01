@@ -1,0 +1,210 @@
+
+# **1️⃣ VPC (Virtual Private Cloud)**
+
+A **logically isolated virtual network** in AWS where you launch EC2, RDS, Load Balancer, etc.
+
+### **Components inside a VPC**
+
+* Subnets (Public / Private)
+* Route Tables
+* Internet Gateway
+* NAT Gateway
+* NACL
+* Security Groups
+* DHCP Options Set
+* Prefix Lists
+* Elastic IP
+
+---
+
+## **📌 How to Create a VPC (Step-by-Step)**
+
+### **STEP 1: Create VPC**
+
+* Go to **VPC → Create VPC**
+* Choose:
+
+  * **VPC-only**
+  * Name: `my-vpc`
+  * IPv4 CIDR: `10.0.0.0/16`
+
+### **STEP 2: Create Subnets**
+
+* Public Subnet-1 → `10.0.1.0/24`
+* Private Subnet-1 → `10.0.2.0/24`
+
+### **STEP 3: Create Internet Gateway**
+
+* Create IGW → Attach to **my-vpc**
+
+### **STEP 4: Create NAT Gateway (optional)**
+
+* Create in **public subnet**
+* Allocate Elastic IP
+
+### **STEP 5: Route Tables**
+
+* Public Route Table → Add route `0.0.0.0/0` → IGW
+* Private Route Table → Add route `0.0.0.0/0` → NAT Gateway
+
+---
+
+# **2️⃣ Elastic IP (EIP)**
+
+A **static public IPv4 address** that **never changes**, even if EC2 is stopped, started, or replaced.
+
+---
+
+## **📌 WHY DO WE NEED EIP?**
+
+* To assign a **permanent public IP** to a server
+* For **production servers**, **bastion hosts**, **NAT gateways**
+* Public IP changes when an instance is stopped—EIP prevents that.
+
+---
+
+## **📌 How to Allocate & Attach EIP (Step-by-Step)**
+
+### **STEP 1: Allocate EIP**
+
+* Go to **EC2 → Network & Security → Elastic IPs**
+* Click **Allocate Elastic IP**
+
+### **STEP 2: Attach EIP**
+
+* Actions → Associate Elastic IP
+* Choose:
+
+  * Resource type: **Instance**
+  * Instance: `your-ec2`
+  * Private IP: auto selected
+
+### **STEP 3: Verify**
+
+* Go to EC2 → instance → check **Public IPv4 = EIP**
+
+---
+
+# **3️⃣ DHCP Options Set**
+
+---
+
+## **📌 What is DHCP Options Set?**
+
+Controls **network configuration** automatically assigned to EC2:
+
+It assigns:
+
+1. **DNS Server IP**
+2. **Domain name (search domain)**
+3. **NTP servers**
+4. **NetBIOS servers**
+
+### **Default values in AWS**
+
+* **DNS Server** → AmazonProvidedDNS
+* **Domain Name** → `ec2.internal` or `ap-south-1.compute.internal`
+
+---
+
+## **📌 Why use custom DHCP Option Set?**
+
+* Custom domain names
+* Use your own DNS server (e.g., Route53 Resolver, on-prem DNS)
+* Corporate environments
+* Hybrid cloud setup (VPN / Direct Connect)
+
+---
+
+## **📌 Steps to Create DHCP Option Set**
+
+### **STEP 1: Create DHCP Option Set**
+
+* Go to VPC → DHCP Option Sets → Create
+* Add:
+
+  * domain-name: `example.com`
+  * domain-name-servers: `10.0.0.2`
+  * ntp-servers: optional
+  * netbios-name-servers: optional
+
+### **STEP 2: Assign to VPC**
+
+* Go to **VPC → Your VPCs**
+* Select `my-vpc`
+* Click **Actions → Edit DHCP options**
+* Select the one you created
+
+---
+
+# **4️⃣ Prefix Lists**
+
+---
+
+## **📌 What is a Prefix List?**
+
+A **collection of CIDR blocks** that you can reuse in:
+
+* Security Groups
+* Route Tables
+* NACLs
+* VPC Peering Rules
+
+AWS provides:
+
+* **AWS Managed Prefix Lists** → e.g., S3, CloudFront
+* **Customer Managed Prefix Lists** → you create your own
+
+---
+
+## **📌 Why Use Prefix Lists?**
+
+* No need to type long CIDR blocks
+* When AWS changes IP ranges, your rules update automatically (for managed lists)
+* Useful in multi-account architecture
+
+---
+
+## **📌 Examples of AWS Managed Prefix Lists**
+
+| Service    | Prefix List Name                                |
+| ---------- | ----------------------------------------------- |
+| S3         | `com.amazonaws.ap-south-1.s3`                   |
+| CloudFront | `com.amazonaws.global.cloudfront.origin-facing` |
+| DynamoDB   | `com.amazonaws.ap-south-1.dynamodb`             |
+
+---
+
+## **📌 Steps to Create & Use Prefix Lists**
+
+### **STEP 1: Create Customer Prefix List**
+
+* Go to VPC → Prefix Lists → Create
+* Name: `office-ip-range`
+* Add entries:
+
+  * `103.45.x.x/32`
+  * `103.45.x.x/32`
+
+### **STEP 2: Use in Security Group**
+
+* Go to SG → Edit inbound rules
+* Source → **Prefix List** → select `office-ip-range`
+
+### **STEP 3: Use in Route Table**
+
+* Go to Route Tables → Edit routes
+* Destination → your prefix list
+* Target → Transit Gateway / VPC Peering
+
+---
+
+# 🎯 **SUMMARY TABLE**
+
+| Component           | Meaning                           | Why Needed?                          |
+| ------------------- | --------------------------------- | ------------------------------------ |
+| **VPC**             | Virtual network for AWS resources | Isolation + networking               |
+| **EIP**             | Static public IPv4                | Fixed public IP for servers          |
+| **DHCP Option Set** | Auto-assign DNS, domain name      | Custom DNS & enterprise setup        |
+| **Prefix List**     | Collection of CIDRs               | Easy, reusable, auto-updatable rules |
+
