@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-config
+  namespace: hello-namespace
+data:
+  index.html: |
+    <html>
+      <head><title>Hello World</title></head>
+      <body>
+        <h1>Hello from GitHub Actions CI/CD</h1>
+        <p>This app was deployed automatically to k3s on AWS EC2</p>
+      </body>
+    </html>
