@@ -1,0 +1,11 @@
+{
+  "name": "docker",
+  "version": "1.0.0",
+  "description": "it is for docker image purpose",
+  "main": "app.js",
+  "scripts": {
+    "start": "npm install && node app.js"
+  },
+  "author": "Sadaf",
+  "license": "ISC"
+}
