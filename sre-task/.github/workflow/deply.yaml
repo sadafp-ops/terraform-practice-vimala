@@ -1,0 +1,41 @@
+name: Deploy to k3s
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      KUBECONFIG: ${{ github.workspace }}/kubeconfig
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+
+    - name: Write kubeconfig from secret
+      run: |
+        printf '%s\n' "${{ secrets.K3S_KUBECONFIG }}" > "$KUBECONFIG"
+
+    - name: Sanity check kubeconfig
+      run: |
+        echo "KUBECONFIG path: $KUBECONFIG"
+        echo "---- contexts ----"
+        kubectl config get-contexts
+        echo "---- set context ----"
+        kubectl config use-context default
+        echo "---- cluster info ----"
+        kubectl cluster-info
+
+    - name: Deploy manifests
+      run: |
+        kubectl apply --validate=false -f k8s/
+        kubectl get pods -n hello-namespace
+        kubectl get svc  -n hello-namespace
