@@ -1,0 +1,46 @@
+version: "3.9"
+services: 
+  mongo:
+    image: mongo:6
+    container_name: sadaf-mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/
+    networks:
+      - sadaf-private-network
+  
+  backend:
+    build:
+      context: ./backend
+    container_name: todo-backend-sadaf
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/todosdb
+      - PORT=4005
+    ports:
+      - "4005:4005"
+    networks:
+      - sadaf-public-network
+      - sadaf-private-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: todo-frontend-sadaf
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    networks:
+      - sadaf-public-network
+
+
+volumes:
+  mongo-data:
+networks:
+  sadaf-public-network:
+    driver: bridge
+  sadaf-private-network:
+    driver: bridge
