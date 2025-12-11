@@ -20,7 +20,7 @@ services:
       - MONGO_URL=mongodb://mongo:27017/todosdb
       - PORT=4005
     ports:
-      - "4005:4005"
+      - "4003:4002"
     networks:
       - sadaf-public-network
       - sadaf-private-network
