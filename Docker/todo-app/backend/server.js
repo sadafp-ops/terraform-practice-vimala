@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 4005;
+const PORT = 4002;
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/todosdb';
 
 app.use(cors());
