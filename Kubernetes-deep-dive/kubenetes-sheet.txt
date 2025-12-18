@@ -1,4 +1,4 @@
-kind create cluster --name "name of the cluster"
+   kind create cluster --name "name of the cluster"
 kind get clusters - to get the info of the clusters
 46        - name: Checkout code
    47          uses: actions/checkout@v3
