@@ -1,0 +1,517 @@
+   kind create cluster --name "name of the cluster"
+kind get clusters - to get the info of the clusters
+46        - name: Checkout code
+   47          uses: actions/checkout@v3
+   48        - name: Set up kubectl
+   49          uses: azure/setup-kubectl@v3
+   50          with:
+   51            version: 'latest'
+   52        - name: Write kubeconfig from secret
+   53          run: |
+   54            printf '%s\n' "${{ secrets.K3S_KUBECONFIG }}" > "$KUBECONFIG"
+   55        - name: Sanity check cluster
+   56          run: |
+   57            kubectl --insecure-skip-tls-verify=true cluster-info
+   58            kubectl --insecure-skip-tls-verify=true get nodes -o wide
+   59        - name: Deploy manifests
+   60          run: |
+   61            kubectl --insecure-skip-tls-verify=true apply --validate=false -f k8s/
+   62            kubectl --insecure-skip-tls-verify=true get pods -A -o wide
+   63  EOF
+   64  cat .github/workflows/deploy.yaml
+   65  git add .github/workflows/deploy.yaml
+   66  git commit -m "Fix workflow YAML and deploy with insecure TLS"
+   67  git push origin main
+   68  terraform destroy
+   69  ls
+   70  cd infra/
+   71  terraform destroy
+   72  exit
+   73  pwd
+   74  ls
+   75  rm -f k3s-remote-kubeconfig.yaml terraform.tfstate
+   76  ls
+   77  cd ..
+   78  pwd
+   79  cd sre-1/
+   80  cd infra/
+   81  ls
+   82  rm -f terraform.tfstate terraform.tfstate.backup
+   83  ls
+   84  cd ..
+   85  pwd
+   86  cd infra/
+   87  terraform init
+   88  terraform fmt
+   89  terraform validate
+   90  terraform plan
+   91  terraform apply
+   92  chmod 400 "k3s-key-thangaraj-tf.pem"
+   93  ssh -i "k3s-key-thangaraj-tf.pem" ubuntu@ec2-13-203-200-195.ap-south-1.compute.amazonaws.com
+   94  terraform destroy
+   95  exit
+   96  pwd
+   97  scp -i infra/k3s-key-thangaraj-tf.pem ubuntu@NEW_IP:~/k3s-remote-kubeconfig.yaml ./k3s-remote-kubeconfig.yaml
+   98  cd ~/sre-1
+   99  scp -i infra/k3s-key-thangaraj-tf.pem ubuntu@NEW_IP:~/k3s-remote-kubeconfig.yaml ./k3s-remote-kubeconfig.yaml
+  100  pwd
+  101  scp -i infra/k3s-key-thangaraj-tf.pem ubuntu@13.203.200.195:~/k3s-remote-kubeconfig.yaml ./k3s-remote-kubeconfig.yaml
+  102  git add .
+  103  git status
+  104  git commit -m "Initial commit"
+  105  git push
+  106  exit
+  107  pwd
+  108  ls
+  109  cd inf
+  110  cd infra/
+  111  ls
+  112  rm -f terraform.tfstate terraform.tfstate.backup
+  113  terraform init
+  114  terrafrom validate
+  115  terraform fmt
+  116  terraform validate
+  117  terraform apply
+  118  chmod 400 "k3s-key-thangaraj-tf.pem"
+  119  ssh -i "k3s-key-thangaraj-tf.pem" ubuntu@ec2-52-66-39-177.ap-south-1.compute.amazonaws.com
+  120  ls
+  121  rm -f terraform.tfstate terraform.tfstate.backup
+  122  git init
+  123  ls
+  124  git status
+  125  git add .
+  126  git commint -m "Test 1"
+  127  git commit -m "Test 1"
+  128  git push
+  129  git status
+  130  git add .
+  131  git commit -m "Test 2"
+  132  git push
+  133  terraform destroy
+  134  ls
+  135  cd infra/
+  136  terraform destroy
+  137  ls
+  138  cd infra
+  139  ls
+  140  terraform init
+  141  terraform validate
+  142  terraform plan
+  143  terraform apply
+  144  ls
+  145  scp -i "k3s-key-thangaraj-tf.pem" ./k8s/hello-index.yaml ubuntu@ec2-65-1-93-108.ap-south-1.compute.amazonaws.com:/home/ubuntu/
+  146  cd ..
+  147  cd ..
+  148  ls
+  149  cd sre-1/
+  150  cd k8s/
+  151  scp -i "k3s-key-thangaraj-tf.pem" ./k8s/hello-index.yaml ubuntu@ec2-65-1-93-108.ap-south-1.compute.amazonaws.com:/home/ubuntu/
+  152  ls
+  153  cd ..
+  154  pwd
+  155  scp -i "k3s-key-thangaraj-tf.pem" k8s/hello-nginx.yaml ubuntu@ec2-65-1-93-108.ap-south-1.compute.amazonaws.com:/home/ubuntu/
+  156  ls
+  157  git status
+  158  git init
+  159  git branch -M main
+  160  git status
+  161  git add .
+  162  git commit -m "initial test1"
+  163  git remote add origin https://github.com/thangarajvimala-mac203/sre-2.git
+  164  git remote remove origin
+  165  git remote add origin https://github.com/thangarajvimala-mac203/sre-2.git
+  166  git push -u origin main --force
+  167  git remote -v
+  168  git status
+  169  git add .
+  170  git commit -m "Initial update 2"
+  171  git push
+  172  ls
+  173  cd infra/
+  174  ls
+  175  pwd
+  176  ls
+  177  cd ..
+  178  ls
+  179  pwd
+  180  ls
+  181  cd infra/
+  182  clear
+  183  pwd
+  184  ls
+  185  rm -f k3s-key-thangaraj-tf.pem terraform.tfstate
+  186  ls
+  187  terraform destroy -audo approve
+  188  terraform destroy -auto-approve
+  189  ls
+  190  ls
+  191  rm -f terraform.tfstate
+  192  cd ..
+  193  ls
+  194  exit
+  195  ls
+  196  cd infra/
+  197  chmod 400 "k3s-key-thangaraj-tf.pem"
+  198  ls
+  199  ssh -i "k3s-key-thangaraj-tf.pem" ubuntu@ec2-65-1-93-108.ap-south-1.compute.amazonaws.com
+  200  exit
+  201  ls
+  202  cd infra/
+  203  ls
+  204  terraform init
+  205  terraform validate
+  206  terraform plan
+  207  terraform apply
+  208  chmod 400 "k3s-key-thangaraj-tf.pem"
+  209  ssh -i "k3s-key-thangaraj-tf.pem" ubuntu@ec2-13-203-156-82.ap-south-1.compute.amazonaws.com
+  210  exit
+  211  ls
+  212  cd infra/
+  213  cd ..
+  214  git init
+  215  git branch -M main
+  216  git remote remove origin
+  217  git remote add origin https://github.com/thangarajvimala-mac203/sre-2.git
+  218  git status
+  219  git add .
+  220  git status
+  221  git commit -m "first commit"
+  222  git remote remove origin
+  223  git remote add origin https://github.com/thangarajvimala-mac203/sre-test-1.git
+  224  git remote -v
+  225  git branch -M main
+  226  git status
+  227  git add .
+  228  git commit -m "first shot"
+  229  git push -u origin main --force
+  230  git add .
+  231  git status
+  232  git commit -m "test 2"
+  233  git push origin main
+  234  git add .
+  235  git status
+  236  git commit -m "test 3"
+  237  git push origin main
+  238  git push origin mainexit
+  239  exit
+  240  ls
+  241  cd  infra/
+  242  terraform destroy -auto-approve
+  243  ls
+  244  rm -f terraform.tfstate terraform.tfstate.backup
+  245  terraform init
+  246  terraform apply
+  247  ls
+  248  git remote remove origin
+  249  ls
+  250  terraform init
+  251  cd  infra/
+  252  terraform apply
+  253  chmod 400 "k3s-key-thangaraj-tf.pem"
+  254  ssh -i "k3s-key-thangaraj-tf.pem" ubuntu@ec2-13-204-63-235.ap-south-1.compute.amazonaws.com
+  255  terraform destroy
+  256  ls
+  257  rm -f terraform.tfstate terraform.tfstate.backup
+  258  ls
+  259  clear
+  260  chmod 400 "ipcckey.pem"
+  261  ssh -i "ipcckey.pem" ec2-user@10.0.3.5
+  262  chmod 400 "ipcckey.pem"
+  263  ssh -i "ipcckey.pem" ec2-user@10.0.2.26
+  264  chmod 400 "ipcckey.pem"
+  265  ssh -i "ipcckey.pem" ec2-user@10.0.2.26
+  266  scp -i "C:/Users/Thangaraj Santhosh/Downloads/yourkey.pem" "C:/Users/Thangaraj Santhosh/Downloads/yourkey.pem" ec2-user@13.233.161.200:/home/ec2-user/
+  267  scp -i "C:/Users/Thangaraj Santhosh/Downloads/ipcckey.pem" "C:/Users/Thangaraj Santhosh/Downloads/ipcckey.pem" ec2-user@13.233.161.200:/home/ec2-user/
+  268  exit
+  269  scp -i "/c/Users/Thangaraj Santhosh/Downloads/yourkey.pem" "/c/Users/Thangaraj Santhosh/Downloads/ipcckey.pem" ec2-user@13.233.161.200:/home/ec2-user/
+  270  exit
+  271  scp -i "/c/Users/Thangaraj Santhosh/Downloads/ipcckey.pem" "/c/Users/Thangaraj Santhosh/Downloads/ipcckey.pem" ec2-user@13.233.161.200:/home/ec2-user/
+  272  scp -i "/c/Users/Thangaraj Santhosh/Downloads/ipcckey.pem"     "/c/Users/Thangaraj Santhosh/Downloads/ipcckey.pem"     ec2-user@13.233.161.200:/home/ec2-user/
+  273  chmod 400 "ipcckey.pem"
+  274  ssh -i "ipcckey.pem" ec2-user@13.233.161.200
+  275  git add .
+  276  git commit -m "added s3 notes"
+  277  git push
+  278  git remote -v
+  279  git configure
+  280  git config
+  281  git --help
+  282  git push
+  283  pwd
+  284  ls
+  285  cd documents/
+  286  ls
+  287  cd ..
+  288  cd ..
+  289  pws
+  290  pwd
+  291  git status
+  292  git push
+  293  git config --global --unset user.name
+  294  git config --global --unset user.email
+  295  git config --global --unset credential.helper
+  296  git config --global --unset user.name
+  297  git config --global --unset user.email
+  298  git config --global --unset credential.helper
+  299  git config --global user.name "vimalathangaraj"
+  300  git config --global user.email "vimalathangaraj20@gmail.com"
+  301  git config --global credential.helper manager
+  302  git config --global --list
+  303  user.name=vimalathangaraj
+  304  user.email=vimalathangaraj20@gmail.com
+  305  git remote -v
+  306  git push
+  307  git push
+  308  git status
+  309  git branch
+  310  git push -u origin feature-vimala-1
+  311  exit
+  312  docker -images
+  313  docker images
+  314  docker pull sadafjamal3/sadaf-docker-image-02
+  315  docker login
+  316  docker pull sadafjamal3/sadaf-docker-image-02
+  317  docker pull sadafjamal3/sadaf-docker-image-02:v1
+  318  docker pull --platform=linux/arm64 sadafjamal3/sadaf-docker-image-02:v1
+  319  docker images
+  320  docker run -d   -p 3000:3000   --name sadaf-container-02   sadafjamal3/sadaf-docker-image-02:v1
+  321  docker run -d   -p  3000:3000 --platform=linux/arm64   --name sadaf-container-02   sadafjamal3/sadaf-docker-image-02:v1
+  322  docker run -d   -p  3000:3000 --platform=linux/arm64   --name vimala-container-02   sadafjamal3/sadaf-docker-image-02:v1
+  323  docker run -d   -p  4000:4000 --platform=linux/arm64   --name vimala-container-03   sadafjamal3/sadaf-docker-image-02:v1
+  324  docker ps
+  325  docker ps -a
+  326  docker run -d   --name frontend-web   -p 4000:80   frontend-web:v1
+  327  clear
+  328  docker ps
+  329  docker network ls
+  330  docker ps -a
+  331  docker inspect backend-api:v2
+  332  docker inspect vimala-redis-db
+  333  docker inspect backend-api
+  334  docker inspect vimala-api
+  335  http://localhost:5000
+  336  docker ps -a
+  337  docker rm sleepy_lalande jovial_edison
+  338  docker ps -a
+  339  docker container prune
+  340  docker ps -a
+  341  docker stop $(docker ps -aq)
+  342  docker rm $(docker ps -aq)
+  343  docker rmi $(docker ps -q)
+  344  docker rmi $(docker images -q)
+  345  docker volume rm $(docker volume ls -q)
+  346  docker network prune -f
+  347  docker ps -a
+  348  docker image
+  349  docker images
+  350  docker rmi $(docker images -q)
+  351   docker stop $(docker ps -aq)
+  352  docker rm $(docker ps -aq)
+  353  docker images
+  354  docker rmi backend-api:v2 vimalathangaraj/backend-app:v1
+  355  docker images
+  356  docker ps -a
+  357  exit
+  358  pwd
+  359  cd ..
+  360  pwd
+  361  pwd
+  362  docker create network my_network
+  363  docker network create my_network
+  364  docker network create my_network
+  365  pwd
+  366  cd db/
+  367  docker run -d --name mongo --network fullstack-net -p 27017:27017
+  368  docker run -d --name mongo --network fullstack-net -p 27017:27017 database-iamge
+  369  docker network ls
+  370  docker network rm my-custom-net
+  371  docker network ls
+  372  pwd
+  373  cd..
+  374  cd ..
+  375  cd frontend/
+  376  docker stop frontend-container
+  377  docker rm frontend-container
+  378  docker run -d -p 8080:80 --name frontend-container-1 frontend-image
+  379  cd ..
+  380  cd db/
+  381  pwd
+  382  docker rm mongo
+  383  docker stop mongo
+  384  docker rm mongo
+  385  docker run -d name db-container --network fullstack-net -v my_db_volume:/data/db mongo:6
+  386  docker login
+  387  docker run -d name db-container --network fullstack-net -v my_db_volume:/data/db database-iamge
+  388  docker volume ls
+  389  docker run -d --name db-container --network fullstack-net -v mongo_data:/data/db database-iamge
+  390  docker volume ls
+  391  docker network ls
+  392  docker exec -it backend-container sh
+  393  docker exec -it frontend-container bash
+  394  pwd
+  395  cd..
+  396  cd ..
+  397  pwd
+  398  docker exec -it frontend-container bash
+  399  docker exec -it frontend-container sh
+  400  docker exec -it frontend-container-1 sh
+  401  exit
+  402  dockwer login
+  403  docker login
+  404  docker network create fullstack-net
+  405  docker network ls
+  406  docker network create fullstack-net
+  407  docker network ls
+  408  docker rm network fullstack-net
+  409  docker volume create mongo_data
+  410  pwd
+  411  ls
+  412  cd docker-fullstack/
+  413  cd frontend/
+  414  docker build -t frontend-image
+  415  docker build -t frontend-image .
+  416  cd ..
+  417  cd backend/
+  418  docker build -t backend-image .
+  419  pwd
+  420  docker run -d --name backend --network fullstack-net -p 4000:4000 backend-image
+  421  cd..
+  422  cd..
+  423  cd ..
+  424  cd frontend/
+  425  docker run -d --name frontend --network fullstack-net -p 8080:80 frontend-image
+  426  docker ps
+  427  cd ..
+  428  docker ps
+  429  docker network inspect fullstck-net
+  430  docker network inspect fullstack-net
+  431  cd ..
+  432  pwd
+  433  cd docker-fullstack/
+  434  cd backend/
+  435  docker start backend
+  436  docker ps
+  437  docker ps -a | grep backend
+  438  docker inspect backend --format 'Status={{.State.Status}} ExitCode={{.State.ExitCode}} StartedAt={{.State.StartedAt}} FinishedAt={{.State.FinishedAt}}'
+  439  docker logs backend --tail 200
+  440  pwd
+  441  docker build -t backend-image-1
+  442  docker build -t backend-image-1 .
+  443  docker run -d --name backend-container --network fullstack-net -p 4000:4000 backend-image-1
+  444  docker ps
+  445  docker run -d --name backend-1 --network fullstack-net -p 4002:4002 backend-image-1
+  446  docker start backend
+  447  docker start backend-1
+  448  docker logs backend-1 --tail 80
+  449  docker rm -f backend-1
+  450  docker ls
+  451  docker build --no-cache -t backend-fixed .
+  452  docker run -d --name backend-1 --network fullstack-net -p 4002:4002 backend-fixed
+  453  docker ps
+  454  cd ..
+  455  pwd
+  456  docker network inspect fullstack-net
+  457  cd frontend/
+  458  docker exec -it frontend sh
+  459  docker network connect fullstack-net backend-1
+  460  docker network inspect fullstack-net
+  461  pwd
+  462  cd ..
+  463  cd backend/
+  464  docker network connect fullstack-net backend-1
+  465  docker network inspect fullstack-net
+  466  history
+  467  pwd
+  468  cd ..
+  469  docker network connect fullstack-net backend-1
+  470  docker network inspect fullstack-net
+  471  docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+  472  docker rm -f backend-1
+  473  cd backend
+  474  docker build --no-cache -t backend-fix .
+  475  cd ..
+  476  docker run -d --name backend-1 --network fullstack-net -p 4002:4002 backend-fix
+  477  docker ps
+  478  docker logs backend-1 --tail 50
+  479  cd ..
+  480  pwd
+  481  cd docker-fullstack/
+  482  cd frontend/
+  483  docker exec -it frontend sh -c "getent hosts backend-1"
+  484  docker exec -it frontend sh -c "wget -qO- http://backend-1:4002/api/hello"
+  485  exit
+  486  kind --version
+  487  kind create cluster --name vimala-cluster
+  488  kind create cluster --name vimala-cluster
+  489  kind create cluster --name vimala-cluster-01
+  490  kind create cluster --name vimala-cluster-01
+  491  kind --version
+  492  kind create cluster --name cluster-01
+  493  kubectl cluster-info --context kind-cluster-01
+  494  kubectl get nodes
+  495  kind delete cluster --name cluster-01
+  496  cat > kind-1m-2w.yaml <<'EOF'
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+EOF
+
+  497  sudo su -
+  498  cd ~
+  499  pwd
+  500  cat > kind-1m-2w.yaml <<'EOF'
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+EOF
+
+  501  cat kind-1m-2w.yaml
+  502  kind create cluster --name dev-cluster --config kind-1m-2w.yaml
+  503   kubectl cluster-info --context kind-dev-cluster
+  504  kubectl get nodes
+  505  kubectl get deployments
+  506  kubectl get ns
+  507  kubectl get svc
+  508  kubectl get podes
+  509  kubectl get pods
+  510  kubectl run vimala-pod --image=nginx
+  511  kubectl get pods
+  512  kubectl get pods
+  513  kubectl describe pods
+  514  kubectl get svc
+  515  kubectl get pod
+  516  kubectl delete vimala-pod
+  517  kubectl delete pod vimala-pod
+  518  kubectl create deployment
+  519  kubectl create deployment web --image=nginx
+  520  kubectl scale deployment web --replicas=4
+  521  kubectl get deployments
+  522  kubectl get pods
+  523  kubectl delete pod web-7c56dcdb9b-6ww4x
+  524  kubectl get pods
+  525  kubectl get pods -o wide
+  526  kubectl expose deployment web --port=80 --type=NodePort
+  527  kubectl get svc
+  528  kubectl get svc web
+  529  kubectl get svc -A
+  530*
+  531  kubectl port-forward svc/web 30802:80
+  532  kubectl create namespace dev-namespace
+  533  kubectl create deployment web-nginx --image=nginx
+  534   --namespace=dev-namespace
+  535  kubectl create deployment web-nginx --image=nginx --namespace=dev-namespace
+  536  kubectl get depolyment
+  537  kubectl get deployment
+  538  kubectl scale deployment web-nginx --replicas=3 -n=dev-namespace
+  539  kubectl get deployment
+  540  kubectl get deployment -n=dev-namespace
+  541   kubectl expose deployment web-nginx --port=80 --type=NodePort -n=dev-namespace
+  542  kubectl get svc
+  543  kubectl get svc -n=dev-namespace
+  544   kubectl port-forward svc/web-nginx 32379:80 -n=dev-namespace

@@ -1,0 +1,136 @@
+CONFIGMAP & SECRET — PRACTICE PROJECT (TASK ONLY)
+
+PROJECT NAME
+Config-Driven Web Application
+
+GOAL
+Practice using ConfigMaps and Secrets with Kubernetes Deployments in a realistic, production-style way.
+
+CLUSTER ASSUMPTION
+
+* Kubernetes cluster is already running
+* kubectl is configured
+* Any local cluster (kind / minikube) is fine
+
+────────────────────────────
+TASK 1: NAMESPACE SETUP
+────────────────────────────
+Create a namespace named:
+
+config-secret-practice
+
+Verify that the namespace exists before moving to the next task.
+
+────────────────────────────
+TASK 2: APPLICATION CONFIGURATION (CONFIGMAP)
+────────────────────────────
+Create a ConfigMap in the namespace with the following keys:
+
+* APP_NAME
+* APP_ENV
+* LOG_LEVEL
+
+Use meaningful values (dev / prod style).
+
+Do NOT hardcode these values inside any Pod or Deployment YAML.
+
+────────────────────────────
+TASK 3: SENSITIVE DATA (SECRET)
+────────────────────────────
+Create a Secret in the same namespace containing:
+
+* DB_USER
+* DB_PASSWORD
+
+Ensure this data is treated as sensitive and not stored in plain text inside application manifests.
+
+────────────────────────────
+TASK 4: DEPLOYMENT CREATION
+────────────────────────────
+Create a Deployment with the following requirements:
+
+* At least 2 replicas
+* Use any lightweight image (nginx / busybox / httpd)
+* Application must read:
+
+  * Non-sensitive config from the ConfigMap as environment variables
+  * Sensitive data from the Secret as environment variables
+
+The Deployment must fail if either the ConfigMap or Secret is missing.
+
+────────────────────────────
+TASK 5: VERIFY CONFIG IN PODS
+────────────────────────────
+Verify that:
+
+* All environment variables from the ConfigMap are available inside the running Pods
+* Secret values are also accessible inside the container environment
+
+Do NOT expose Secret values via logs or Service responses.
+
+────────────────────────────
+TASK 6: SECRET AS FILE
+────────────────────────────
+Update the Deployment so that:
+
+* The Secret is also mounted as a file inside the container
+* Only the database password is readable from the file
+
+Verify that the file exists inside the container.
+
+────────────────────────────
+TASK 7: CONFIG UPDATE BEHAVIOR
+────────────────────────────
+Update one value in the ConfigMap (for example APP_ENV).
+
+Observe whether the running Pods automatically pick up the change.
+
+If not, take the required action to make the new value effective.
+
+────────────────────────────
+TASK 8: FAILURE SCENARIO
+────────────────────────────
+Delete the Secret used by the Deployment.
+
+Observe and document what happens to:
+
+* Existing Pods
+* Newly created Pods
+
+Restore the Secret and verify application recovery.
+
+────────────────────────────
+TASK 9: ROLLBACK TEST
+────────────────────────────
+Change the Deployment (for example image or command).
+
+Trigger a rollback to the previous version.
+
+Verify that:
+
+* Application configuration still works
+* Secret and ConfigMap data remain intact
+
+────────────────────────────
+TASK 10: CLEANUP
+────────────────────────────
+Delete all resources created during this project in the correct order.
+
+────────────────────────────
+EXPECTED OUTCOME
+────────────────────────────
+After completing this project, you should be able to explain:
+
+* Why ConfigMaps and Secrets exist
+* When to use environment variables vs files
+* How configuration changes affect running Pods
+* How Kubernetes behaves when configuration is missing
+
+
+solutions:
+
+kubectl create configmap app-config \
+  --from-literal=APP_NAME=ConfigDrivenApp \
+  --from-literal=APP_ENV=dev \
+  --from-literal=LOG_LEVEL=debug \
+  -n config-secret-practice
