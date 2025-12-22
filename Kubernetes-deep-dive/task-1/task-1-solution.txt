@@ -1,0 +1,82 @@
+NODE ISOLATION USING TAINT AND TOLERATION
+
+I isolated workloads in kubernetes cluster so
+  * Normal application run only on normal node
+  *GPU workloads run only on GPU node
+  * Infra workloads run only on infra node
+
+first i created cluster :
+             * using yaml file and yaml file contains 1- control plane and 
+               3- worker nodes.
+             * one worker node - normal application
+             * one worker node - gpu workload
+             * one worker node - infra workload
+
+    then i used command which create name of cluster and config yaml file to execute
+                      
+                       "kind create cluster --name taint-lab  --config kind-cluster.yaml"
+
+and then i taint each worker node to restrict scheduling:
+
+                          *kubectl taint nodes taint-lab-worker  workload=normal:NoSchedule
+                          *kubectl taint nodes taint-lab-worker2 workload=gpu:NoSchedule
+                          *kubectl taint nodes taint-lab-worker3 workload=infra:NoSchedule
+
+            and this nodes reject all pods which are mismatch toleration. i taint node first and apply yaml
+            file.
+
+yaml file for normal.yaml:
+                   type: Deployment
+                   replicas: 2
+                   image: nginx
+                   toleration: workload-normal
+                   selector:matchLabels:normal-app
+                   container:name
+                   runs only infra node
+
+yaml file for gpu-workload.yaml:
+                     type: Deployment
+                     image: busybox
+                     command:simulated workload and sleep time 30 
+                     toleraion:gpu-workload
+                     runs only gpu node
+
+yaml file for infra-workload.yaml:
+                     type:pod
+                     image:busybox
+                     command:simulated monitoring and logging
+                     runs only infra node
+
+then i got error in yaml file that i gave,
+                                     * matchlabels - matchLabels
+when i gave "kubectl get pods" - i got infra-node is pending that is why,
+                                     * taint did not match toleration and node is wrongly tainted.
+                        and i gave this command to fix:
+                                     kubectl taint nodes taint-lab-worker3 workload=infra:NoSchedule --overwrite
+i got crashloop back off error:
+                         * because container start and stop immediaely, so the kubernetes restart the container again,
+                         *echo "message"; while true; do sleep 30; done
+                         *while true; do sleep 60; done
+                         Why it worked:
+
+                             Command never exits
+
+                             Container stays alive
+
+                            Pod remains Running 
+
+
+i tested:
+
+        kubectl get pods -o wide 
+
+        * this command shows all pods are running and isolated by taints
+        * one node is running in normal application
+        *one node is running in gpu workload 
+        *one node is running in infra workload
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

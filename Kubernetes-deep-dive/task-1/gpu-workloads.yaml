@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpu-workload
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpu-workload
+  template:
+    metadata:
+      labels:
+        app: gpu-workload
+    spec:
+      tolerations:
+        - key: "workload"
+          operator: "Equal"
+          value: "gpu"
+          effect: "NoSchedule"
+      containers:
+        - name: gpu-sim
+          image: busybox:1.36
+          command: ["sh", "-c", "echo 'simulating gpu/ml workload'; while true; do sleep 30; done"]
+          

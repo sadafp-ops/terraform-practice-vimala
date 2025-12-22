@@ -1,0 +1,106 @@
+KUBERNETES INTERVIEW TASK
+Node Isolation using Taints and Tolerations
+
+Time: 30–45 minutes
+
+---
+
+SCENARIO
+
+You have a Kubernetes cluster with 3 worker nodes.
+Each node should be used for a different type of workload.
+
+One node is for:
+
+* Normal applications
+
+One node is for:
+
+* GPU or machine learning workloads
+
+One node is for:
+
+* Infrastructure or monitoring workloads
+
+Your task is to make sure that each workload runs only on the correct node.
+
+---
+
+TASK REQUIREMENTS
+
+1. NODE SETUP
+
+* Choose one node and mark it as a GPU node
+* Choose one node and mark it as an infra (monitoring) node
+* Normal applications must not run on GPU or infra nodes
+
+2. NORMAL APPLICATION
+
+* Create a Deployment
+* Use any public image (for example nginx)
+* Run 2 replicas
+* This application must run only on the normal node
+
+3. GPU WORKLOAD
+
+* Create a Pod or Deployment
+* Simulate a GPU or ML workload
+* This workload must run only on the GPU node
+* It must not run on normal or infra nodes
+
+4. INFRASTRUCTURE WORKLOAD
+
+* Create a Pod
+* Simulate a monitoring or logging workload
+* This workload must run only on the infra node
+
+5. VALIDATION
+
+* Show that:
+
+  * Normal app pods are running only on the normal node
+  * GPU workload is running only on the GPU node
+  * Infra workload is running only on the infra node
+
+---
+
+CONSTRAINTS
+
+* Do not use nodeSelector
+* Do not use nodeAffinity
+* Use only taints and tolerations
+* Do not remove taints after adding them
+
+---
+
+DELIVERABLES
+
+* Kubernetes YAML files
+* Output of these commands:
+  kubectl get nodes
+  kubectl get pods -o wide
+
+---
+
+INTERVIEW QUESTIONS
+
+* What is a taint?
+* What is a toleration?
+* Why do we need taints in production clusters?
+* What happens if a pod does not have a required toleration?
+
+---
+
+BONUS QUESTIONS (OPTIONAL)
+
+* What is the difference between NoSchedule and NoExecute?
+* What happens when a node becomes NotReady?
+* Why are GPU nodes usually tainted?
+
+---
+
+This task checks whether the candidate understands:
+
+* Kubernetes scheduling basics
+* Taints and tolerations
+* Real-world cluster isolation concepts

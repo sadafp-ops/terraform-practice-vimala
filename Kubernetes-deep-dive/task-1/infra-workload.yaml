@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: infra-workload
+spec:
+  tolerations:
+    - key: "workload"
+      operator: "Equal"
+      value: "infra"
+      effect: "NoSchedule"
+  containers:
+    - name: infra-sim
+      image: busybox:1.36
+      command: ["sh", "-c", "while true; do sleep 60; done"]
