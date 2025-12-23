@@ -515,3 +515,40 @@ EOF
   542  kubectl get svc
   543  kubectl get svc -n=dev-namespace
   544   kubectl port-forward svc/web-nginx 32379:80 -n=dev-namespace
+
+     KUBERNETES KIND
+
+ 1027  kind delete cluster --name sadaf-cluster.yaml
+ 1028  kind get clusters
+ 1029  kubectl config get-contexts
+ 1030  kubectl get nodes
+ 1031  nano sadaf-practice-cluster.yaml
+ 1032  kind delete cluster --name sadaf-practice-cluster.yaml
+ 1033  nano practice-cluster.yaml
+ 1034  kind create cluster --name sadaf-own-cluster --config practice-cluster.yaml
+ 1035  kubectl get nodes
+ 1036  history
+ 1037  kubectl get pods -n kube-system
+ 1038  kubectl config get-contexts
+ 1039  kubectl config use-context kind-kcna-cluster
+ 1040  kubectl config get-contexts
+ 1041  kubectl config use-context kind-sadaf-own-cluster
+ 1042  kubectl get nodes
+
+ KUBERNETES AUTOSCLAING
+ 1114  kubectl expose deployment web \\n  --port=80 \\n  --target-port=80 \\n  -n hpa-project\n
+ 1115  kubectl get svc -n hpa-project\n
+ 1116  kubectl autoscale deployment web \\n  --cpu-percent=50 \\n  --min=1 \\n  --max=5 \\n  -n hpa-project\n
+ 1117  kubectl run load \\n  --image=busybox \\n  -n hpa-project \\n  -- sh -c "while true; do wget -q -O - http://web; done"\n
+ 1118  kubectl get pods -n hpa-project -w\n
+ 1119  kubectl get pods -n hpa-project -w\n
+ 1120  kubectl get pods -n hpa-project -w\n
+ 1121  kubectl delete pod load -n hpa-project
+ 1122  kubectl get pods -n hpa-project -w\n
+ 1123  kubectl delete pod load -n hpa-project
+ 1124  kubectl run load \\n  --image=busybox \\n  -n hpa-project \\n  -- sh -c "while true; do wget -q -O - http://web; done"\n
+ 1125  kubectl get pods -n hpa-project -w\n
+ 1126  kubectl get pods -n hpa-project -w\n
+ 1127  kubectl top pods -n hpa-project\nkubectl get hpa -n hpa-project\n
+ 1128  kubectl get pods -n hpa-project -w\n
+ 1129  kubectl top pods -n hpa-project\nkubectl get hpa -n hpa-project\n
