@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: config-secret-practice
+data:
+  APP_NAME: "user-service"
+  APP_ENV: "dev"
+  LOG_LEVEL: "debug"

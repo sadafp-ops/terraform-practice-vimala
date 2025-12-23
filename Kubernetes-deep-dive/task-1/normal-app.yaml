@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: normal-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: normal-app
+  template:
+    metadata:
+      labels:
+        app: normal-app
+    spec:
+      tolerations:
+        - key: "workload"
+          operator: "Equal"
+          value: "normal"
+          effect: "NoSchedule"
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80

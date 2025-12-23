@@ -1,0 +1,95 @@
+KUBERNETES INTERVIEW TASK
+Affinity and Anti-Affinity Scheduling
+
+Time: 30–45 minutes
+
+---
+
+SCENARIO
+
+You have a Kubernetes cluster with multiple worker nodes.
+Some nodes are meant for frontend applications, and your application must also be highly available.
+
+Your goal is to control **where pods run** and **how they are spread across nodes** using **affinity and anti-affinity**.
+
+---
+
+TASK REQUIREMENTS
+
+1. NODE LABELING
+
+* Choose one or more nodes and label them for frontend workloads
+* These nodes should be used only for frontend applications
+
+---
+
+2. FRONTEND APPLICATION (NODE AFFINITY)
+
+* Create a Deployment for a frontend application
+* Use any public image (for example nginx)
+* Replicas: 3
+* The pods must run **only on nodes with the frontend label**
+* If no such node exists, the pods should not start
+
+---
+
+3. HIGH AVAILABILITY (POD ANTI-AFFINITY)
+
+* Make sure that:
+
+  * No two frontend pods run on the same node
+  * Each replica runs on a different node
+* This should be enforced using **pod anti-affinity**
+
+---
+
+4. VALIDATION
+
+* Show that:
+
+  * Pods are scheduled only on labeled frontend nodes
+  * Pods are spread across different nodes
+* Use kubectl commands to prove this
+
+---
+
+CONSTRAINTS
+
+* Do not use nodeSelector
+* Do not use taints or tolerations
+* Use only node affinity and pod anti-affinity
+* YAML files should be clean and readable
+
+---
+
+DELIVERABLES
+
+* Kubernetes YAML manifest files
+* Output of:
+  kubectl get nodes --show-labels
+  kubectl get pods -o wide
+
+---
+
+INTERVIEW QUESTIONS
+
+* What is node affinity?
+* What is pod anti-affinity?
+* Why is anti-affinity important for high availability?
+* What happens if there are fewer nodes than replicas?
+
+---
+
+BONUS QUESTIONS (OPTIONAL)
+
+* Difference between required and preferred affinity
+* What is topologyKey and why is it needed?
+* How does affinity help in production clusters?
+
+---
+
+This task checks:
+
+* Understanding of scheduling concepts
+* High availability design
+* Real-world Kubernetes placement strategies

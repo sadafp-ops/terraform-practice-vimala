@@ -1,0 +1,58 @@
+create a  fresh cluster 
+because old cluster had taint from task -1
+ " kind create cluster --name affinity-lab --config kind-cluster.yaml"
+ " kubectl config use-context kind-affinity-lab"
+ label worker node as frontend:
+       kubectl label node affinity-lab-worker  workload=frontend
+       kubectl label node affinity-lab-worker2 workload=frontend
+       kubectl label node affinity-lab-worker3 workload=frontend
+
+    i assigned  label for each node
+    and we have to check the labels:
+                                   "kubectl get nodes --show-labels"
+
+then i have created deployment file with affinity rule:
+                                                "frontend-deploy.yaml"
+
+                                node affinity -> only frontend nodes
+                                pod anti-affinity -> one pod per node 
+
+and then i apply deployment file: "kubectl apply -f frontend-deploy.yaml"
+
+final i verified : "kubectl get pods -o wide"
+
+error i got:
+           * when i type code of my own i gor error:
+                                                   template outside of spec 
+                                                   then i fix it : spec
+                                                                     |_template
+                                                                       |_spec
+            * then i got again one error:
+                                        container is not under spec:
+                                                                    spec:
+                                                                      template:
+                                                                        spec:
+                                                                          containers:
+            *  then i got error in topologyKey under nodeAffinity:
+                                                        i placed topologyKey in node affinity and i replace 
+                                                        to podAntiAffinity
+
+            * then i got error in pod got struck(still in pending status):
+                                                         *old cluster still taints from task1
+                                                         *and i fix by deleted old cluster and create new cluster
+                                                          in task-2
+            * then i got error in kubectl apply says no found error:
+                                                            * i were mistakely in task-1 path
+                                                            * and then i moved to task-2 by "cd" command 
+                                                            * before apply "kubectl apply -f frontend.deploy.yaml"
+            * then error is my nodes are not ready:
+                                              *because i created cluster again , i mistakely created in wrong path.
+                                              * so cluster take time to create and waited until nodes becomes ready
+                                                before labeling or deploying.
+
+
+        I LABELED THE WORKER NODES FOR FRONTEND, ENFORCE NODE AFFINITY TO RESTRICT PLACEMENT AND USING REQUIRED 
+        POD-AFFINITY TO SPREAD REPLICAS ACROSS NODES FOR HIGH-AVAILABILITY.
+                    
+
+
