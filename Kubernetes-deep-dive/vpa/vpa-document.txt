@@ -1,0 +1,44 @@
+ Create namespace:
+    kubectl create ns vpa-basic 
+and in deployment file created and applu 
+  kubectl apply -f app.yaml
+  kubectl get pods -n vpa-basic 
+ Install VPA (once per cluster)
+Option A (if you already installed earlier, skip)
+
+Check:
+
+kubectl api-resources | findstr VerticalPodAutoscaler
+
+
+If not found, install VPA using autoscaler repo:
+
+git clone https://github.com/kubernetes/autoscaler.git
+cd autoscaler/vertical-pod-autoscaler
+./hack/vpa-up.sh 
+
+kubectl apply -f deploy/vpa-rbac.yaml
+kubectl apply -f deploy/recommender-deployment.yaml
+kubectl apply -f deploy/updater-deployment.yaml
+kubectl apply -f deploy/admission-controller-deployment.yaml
+
+kubectl get pods -n kube-system | findstr vpa
+
+then apply vpa.yaml
+        kubectl apply -f vpa.yaml
+then aplly load.yaml
+        kubectl apply -f load.yaml
+
+
+switch vpa to auto
+   kubectl edit vpa web-vpa -n vpa-basic
+change
+     updateMode: "Auto"
+
+        kubectl rollout restart deployment/web -n vpa-basic
+        kubectl get pods -n vpa-basic -w
+ check the pods requests changed:
+        kubectl describe pod -n vpa-basic | findstr /C:"Requests" /C:"Limits"
+clean up:
+       kubectl delete ns vpc-basic
+       

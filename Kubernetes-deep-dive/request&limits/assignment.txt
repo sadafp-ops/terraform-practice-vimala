@@ -1,0 +1,88 @@
+  REQUESTS AND LIMITS
+    
+    requests:
+          *request which is a guaranteed minimum amount of CPU and memory that a container needs to run
+
+    limits:
+         * maximum allowed cpu and memory that container needs to run.
+
+         CPU over limit → throttling
+
+Memory over limit → OOMKilled
+
+1 Create a namespace 
+"kubectl create namespace demo-practice"
+
+
+Verify:
+
+kubectl get ns resource-practice
+
+2 Create Deployment YAML with requests & limits
+
+Create file: resources.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: resource-practice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+
+
+Where to place it:
+resources: must be inside the container block:
+spec.template.spec.containers[0].resources
+
+3 Apply the YAML
+kubectl apply -f resources.yaml
+
+4 Verify pod is running
+kubectl get pods -n resource-practice
+
+5 Verify requests/limits applied (most important verification)
+kubectl describe pod -n resource-practice | grep -A10 -E "Limits|Requests"
+
+
+Expected output pattern:
+
+Limits: cpu 200m, memory 256Mi
+
+Requests: cpu 100m, memory 128Mi
+
+6 Practice scenarios (real learning)
+Scenario A: Show CPU throttling (safe)
+
+Edit resources.yaml and set:
+
+limits:
+  cpu: "50m"
+
+
+Apply:
+
+kubectl apply -f resources.yaml
+
+
+Result: under CPU load, the app gets slow because CPU is throttled.
