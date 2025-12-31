@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prod-cert
+  namespace: prod-app
+spec:
+  secretName: prod-tls-secret
+  commonName: prod.myapp.local
+  dnsNames:
+  - prod.myapp.local
+  issuerRef:
+    name: prod-issuer
+    kind: Issuer
+ 

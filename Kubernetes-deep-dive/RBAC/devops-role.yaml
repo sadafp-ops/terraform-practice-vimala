@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: devops-role
+  namespace: prod-app
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "deployments", "services", "configmaps"]
+  verbs: ["get", "list", "watch", "create", "update", "delete"]
+ 
+- apiGroups: ["cert-manager.io"]
+  resources: ["certificates", "issuers"]
+  verbs: ["get", "list", "create", "update", "delete"]
