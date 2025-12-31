@@ -1,0 +1,36 @@
+first i use existing kind cluster - kind-vimala-1
+then i created a namespace - hpa-namespace
+after that i created Deployment.yaml file - name as web 
+                in that file: replica-1
+                              image: nginx
+                              container:
+                                    *requests: cpu 100m, memory 128Mi
+                                    *limits: cpu 200m, memory 256Mi
+then we have to create service file which contains 
+                                        * name of service - web-svc
+                                        *cluster Ip & port 80
+next i installed metircs server 
+create HPA:
+       *minReplicas: 1
+       *maxReplicas: 5
+       *target CPU utiliztion: 50%
+then we created namespace:
+           *kubectl create ns hpa-namespace
+    apply deployment file and service file
+  we install metric server instead of eks 
+     *kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+then we create hpa yaml file and apply it 
+  using: kubectl apply -f hpa.yaml
+
+we can check hpa scale pod using:
+                   * load.yaml
+        and apply load file: 
+                  kubectl apply -f load.yaml
+
+to check scaling:
+             kubectl get pods -n hpa-namespace -w
+             kubectl get hpa -n hpa-namespace -w
+to stop load:
+           kubectl delete pod load -n hpa-namespace
+ 

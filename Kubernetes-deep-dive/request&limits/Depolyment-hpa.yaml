@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hpa-web
+  namespace: hpa-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hpa-web
+  template:
+    metadata:
+      labels:
+        app: hpa-web
+  spec:
+    containers:
+      - name: hpa-web
+        image: nginx
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+ 
+ 
