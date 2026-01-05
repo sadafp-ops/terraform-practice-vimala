@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: prod-cert
+  name: prod-cert-1
   namespace: prod-app
 spec:
   secretName: prod-tls-secret

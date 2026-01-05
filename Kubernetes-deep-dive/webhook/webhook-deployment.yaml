@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pe-webhook
+  namespace: platform-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: pe-webhook}
+  template:
+    metadata:
+      labels: {app: pe-webhook}
+    spec:
+      containers:
+      - name: webhook
+        # Replace `pe-webhook` with your registry path after you build & push the image, e.g. myhub/pe-webhook:latest
+        image: pe-webhook
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - name: webhook-tls
+          mountPath: /tls
+          readOnly: true
+      volumes:
+      - name: webhook-tls
+        secret:
+          secretName: pe-webhook-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pe-webhook
+  namespace: platform-demo
+spec:
+  selector: {app: pe-webhook}
+  ports:
+  - port: 8443
+ 
