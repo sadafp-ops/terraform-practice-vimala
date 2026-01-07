@@ -1,0 +1,213 @@
+    1  pwd
+    2  cd ..
+    3  pwd
+    4  cd root
+    5  ls
+    6  ls -a
+    7  cd ..
+    8  ls
+    9  cd ~
+   10  pwd
+   11  mkdir project-1
+   12  cd project-1/
+   13  clear
+   14  pwd
+   15  touch users.txt
+   16  echo "root:/b/bash" > users.txt
+   17  echo "hr1:/b/bash" >> users.txt
+   18  echo "hr2:/b/bash" >> users.txt
+   19  echo "dev1:/b/bash" >> users.txt
+   20  echo "dev2:/b/bash" >> users.txt
+   21  echo "root:/bin/bash" > users.txt
+   22  echo "hr1:/bin/bash" >> users.txt
+   23  echo "hr2:/bin/bash" >> users.txt
+   24  echo "dev1:/bin/bash" >> users.txt
+   25  echo "dev2:/bin/bash" >> users.txt
+   26  echo "fin1:/bin/bash" >> users.txt
+   27  echo "guest/sbin/nologin" >> users.txt
+   28  cat users.txt
+   29  grep bash users.txt
+   30  grep -i BASH users.txt
+   31  grep -n bash users.txt
+   32  grep bash users.txt > bash_users.txt
+   33  cat bash_users.txt
+   34  ls
+   35  grep zsh users.txt >> bash_users.txt
+   36  cat bash_users.txt
+   37  grep bash /etc/passwd
+   38  grep bash /etc/passwd | grep -v nologin
+   39  touch app.log
+   40  echo "INFO User login success" > app.log
+   41  echo "INFO Data saved" >> app.log
+   42  echo "ERROR Database connection failed" >> app.log
+   43  echo "INFO User logout" >> app.log
+   44  echo "ERROR Disk full" >> app.log
+   45  echo "WARNING Low memory" >> app.log
+   46  cat app.log
+   47  grep ERROR app.log
+   48  grep -E "ERROR | WARNING" app.log
+   49  grep app.log > data.log
+   50  cat data.log
+   51  pwd
+   52  cd ..
+   53  cd project-1/
+   54  sudo - hr1
+   55  su - hr1
+   56  grep root /etc/passwd
+   57  grep bash /etc/passwd
+   58  ls
+   59  rm data.log
+   60  ls
+   61  head users.txt
+   62  find / -name app.log
+   63  locate passwd
+   64  sort app.log
+   65  wc -l app.log
+   66  cat /etc/passwd | grep bash
+   67  ls
+   68  whoami
+   69  useradd sadaf
+   70  id sadaf
+   71  passwd sadaf
+   72  useradd vimala
+   73  passwd vimala
+   74  BAD PASSWORD: The password fails the dictionary check - it is based on a dictionary word
+   75  Retype new password:
+   76  Sorry, passwords do not match.
+   77  passwd: Authentication token manipulation error
+   78  passwd: password unchanged
+   79  [root@ip-172-31-27-84 project-1]# useradd vimala
+   80  [root@ip-172-31-27-84 project-1]# passwd vimala
+   81  New password:
+   82  BAD PASSWORD: The password is shorter than 8 characters
+   83  Retype new password:
+   84  Sorry, passwords do not match.
+   85  passwd: Authentication token manipulation error
+   86  passwd: password unchanged
+   87  [root@ip-172-31-27-84 project-1]#
+   88  BAD PASSWORD: The password is shorter than 8 characters
+   89  passwd vimala
+   90  cat /etc/passwd
+   91  groupadd devops
+   92  ls
+   93  usermode -aG devops vimala
+   94  usermod -aG devops vimala
+   95  id vimala
+   96  useradd dhuruv
+   97  useradd thanga
+   98  passwd dhuruv
+   99  passwd thanga
+  100  groupadd family
+  101  usermod -aG family dhuruv thanga
+  102  usermod -aG family dhuruv
+  103  usermod -aG family thanga
+  104  id dhuruv
+  105  id thanga
+  106  history
+  104  id dhuruv
+  104  id dhuruv
+    175  cd project-1/
+  176  ls
+  177  cd ..
+  178  mkdir -p /data/project
+  179  ls
+  180  ls -l /data/project
+  181  chown dev1:developers /data/project
+  182  ls -ld
+  183  ls -ld /data/project
+  184  chmod 770 /data/project
+  185  touch /data/project/report.txt
+  186  ls
+  187  ls -ld /data/project
+  188  chmod 600 /data/project/report.txt
+  189  chown :developers/data/project/report.txt
+  190  chown :developers /data/project/report.txt
+  191  umask
+  192  chmod g-w /data/project/report.txt
+  193  umask
+  194  touch test.txt
+  195  ls -l test.txt
+  196  touch testfile
+  197  ls -l testfile
+  198  umask
+  199  mkdir /acltest
+  200  touch /acltest/file.txt
+  201  ls -l /acltest/file.txt
+  202  useradd elis
+  203  setfacl -m u:elis:r /acltest/file.txt
+  204  sudo yum install -y acl
+  205  setfacl -m u:elis:r /acltest/file.txt
+  206  getfacl /acltest/file.txt
+  207  mkdir /shared
+  208  setfacl -m u:lisa:rx /shared
+  209  setfacl -m "u:lisa:rx" /shared
+  210  setfacl --modify u:lisa:rx /shared
+  211  ls -ld /shared
+  212  df -T /shared
+  213  mount | grep shared
+  214  getfacl /shared
+  215  mkdir /shared_acl
+  216  setfacl -m u:lisa:rx /shared_acl
+  217  getfacl /shared_acl
+  218  useradd john
+  219  useradd yema
+  220  groupadd developer
+  221  id yema
+  222  chmod -aG developer yema
+  223  usermod -aG developer yema
+  224  id yema
+  225  mkdir projecty
+  226  ls
+  227  setfacl -m u:yema:rx /projecty
+  228  setfacl -m u:yema:rx projecty
+  229  getfacl projecty
+  230  setfacl -m d:u:yema:rx projecty
+  231  getfacl projecty
+   232  history
+  233  clear
+  234  systemctl status httpd
+  235  udo yum install -y httpd
+  236  sudo systemctl enable --now httpd
+  237   yum install -y httpd
+  238   systemctl enable --now httpd
+  239  systemctl start httpd
+  240  systemctl enable httpd
+  241  systemctl is-active httpd
+  242  systemctl is-enabled httpd
+  243  systemctl stop httpd
+  244  systemctl start httpd
+  245  systemctl status sshd
+  246  systemctl stop sshd
+  247  systemctl status sshd
+  248  systemctl start sshd
+  249  systemctl enable sshd
+  250  systemctl disable sshd
+  251  systemctl restart httpd
+  252  systemctl get-default
+  253  journalctl -u httpd
+  254  journalctl -b
+  255  systemctl cat sshd
+  256  lsblk
+  257  fdisk/dev/sdb
+  258  cd ..
+  259  lsblk
+  260  fdisk /nvme0n1/nvme0n1p1
+  261  lsblk
+  262  fdisk /dev/nvme1n1
+  263  lsblk
+  264  mkfs.xfs /nvme1n1/nvme1n1p1
+  265  mkfs.xfs /dev/nvme1n1p1
+  266  mkdir /data
+  267  mkdir /data1
+  268  ls -ld /data1
+  269  mount /dev/nvme1n1p1 /data1
+  270  df -h
+  271  lsblk
+  272  cd /data1
+  273  touch testfile
+  274  ls -l
+  275  echo "linux test" > /data1/file1
+  276  cat /data1/file1
+  277  cd /
+  278  umount /data1
+  279  df -h | grep data1

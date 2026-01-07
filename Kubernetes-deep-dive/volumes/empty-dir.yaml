@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: empty-dir-pod
+spec:
+  containers:
+  - name: app-container
+    image: busybox
+    command: [ "sh", "-c", "echo Hello Kubernetes! && sleep 3600" ]
+    volumeMounts:
+    - name: empty-dir-volume
+      mountPath: /usr/share/empty-dir
+  volumes:
+  - name: empty-dir-volume
+    emptyDir: {}
